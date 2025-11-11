@@ -37,7 +37,7 @@ public class UserInterface {
         scanner.close();
     }
 
-    // Display home screen
+
     private void displayHomeScreen() {
         System.out.println("\n========================================");
         System.out.println("       Welcome to TACO-licious!        ");
@@ -62,11 +62,13 @@ public class UserInterface {
             System.out.println(currentOrder.displayOrderSummary());
 
             System.out.println("\n--- Order Menu ---");
-            System.out.println("1) Add Taco");
-            System.out.println("2) Add Drink");
-            System.out.println("3) Add Chips & Salsa");
-            System.out.println("4) Remove Item");
-            System.out.println("5) Checkout");
+            System.out.println("1) Add Custom Taco");
+            System.out.println("2) Add Signature Street Taco");
+            System.out.println("3) Add Signature Super Burrito");
+            System.out.println("4) Add Drink");
+            System.out.println("5) Add Chips & Salsa");
+            System.out.println("6) Remove Item");
+            System.out.println("7) Checkout");
             System.out.println("0) Cancel Order");
             System.out.print("Enter your choice: ");
 
@@ -78,27 +80,33 @@ public class UserInterface {
                     Taco taco = addTacoScreen();
                     if (taco != null) {
                         currentOrder.addItem(taco);
-                        System.out.println("\n✓ Taco added to order!");
+                        System.out.println("\n✓ Custom taco added to order!");
                     }
                     break;
                 case 2:
+                    addSignatureStreetTaco();  // NEW!
+                    break;
+                case 3:
+                    addSignatureSuperBurrito();  // NEW!
+                    break;
+                case 4:
                     Drink drink = addDrinkScreen();
                     if (drink != null) {
                         currentOrder.addItem(drink);
                         System.out.println("\n✓ Drink added to order!");
                     }
                     break;
-                case 3:
+                case 5:
                     ChipsAndSalsa chips = addChipsScreen();
                     if (chips != null) {
                         currentOrder.addItem(chips);
                         System.out.println("\n✓ Chips & Salsa added to order!");
                     }
                     break;
-                case 4:
+                case 6:
                     removeItemScreen();
                     break;
-                case 5:
+                case 7:
                     if (currentOrder.isValid()) {
                         checkout();
                         ordering = false;
@@ -492,6 +500,226 @@ public class UserInterface {
             System.out.println("Thank you for your order!");
         } else {
             System.out.println("\n✗ Checkout cancelled. Returning to order menu.");
+        }
+    }
+
+    private void addSignatureStreetTaco() {
+        System.out.println("\n========================================");
+        System.out.println("      Signature Street Taco");
+        System.out.println("========================================");
+        System.out.println("Includes:");
+        System.out.println("- 3-Taco Plate");
+        System.out.println("- Corn Tortillas");
+        System.out.println("- Carne Asada");
+        System.out.println("- Onions");
+        System.out.println("- Cilantro");
+        System.out.println("- Salsa Verde");
+        System.out.println("========================================");
+
+        StreetTaco taco = new StreetTaco();
+
+        System.out.println("\nWould you like to customize this taco?");
+        System.out.println("1) Add as-is");
+        System.out.println("2) Customize toppings");
+        System.out.print("Enter choice: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice == 2) {
+            customizeSignatureTaco(taco);
+        }
+
+        currentOrder.addItem(taco);
+        System.out.println("\n✓ Street Taco added to order!");
+    }
+
+    private void addSignatureSuperBurrito() {
+        System.out.println("\n========================================");
+        System.out.println("      Signature Super Burrito");
+        System.out.println("========================================");
+        System.out.println("Includes:");
+        System.out.println("- Burrito");
+        System.out.println("- Flour Tortilla");
+        System.out.println("- Carnitas");
+        System.out.println("- Cheddar Cheese");
+        System.out.println("- Pico de Gallo");
+        System.out.println("- Lettuce");
+        System.out.println("- Tomatoes");
+        System.out.println("- Birria Dipped (Deep Fried)");
+        System.out.println("========================================");
+
+        SuperBurrito burrito = new SuperBurrito();
+
+        System.out.println("\nWould you like to customize this burrito?");
+        System.out.println("1) Add as-is");
+        System.out.println("2) Customize toppings");
+        System.out.print("Enter choice: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice == 2) {
+            customizeSignatureTaco(burrito);
+        }
+
+        currentOrder.addItem(burrito);
+        System.out.println("\n✓ Super Burrito added to order!");
+    }
+
+    private void customizeSignatureTaco(Taco taco) {
+        System.out.println("\n--- Customize Your Signature Taco ---");
+
+        boolean customizing = true;
+        while (customizing) {
+            System.out.println("\n1) Add extra meat");
+            System.out.println("2) Add extra cheese");
+            System.out.println("3) Add more toppings");
+            System.out.println("4) Add more sauces");
+            System.out.println("5) Remove a topping");
+            System.out.println("0) Done customizing");
+            System.out.print("Enter choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    taco.setExtraMeat(true);
+                    System.out.println("✓ Extra meat added");
+                    break;
+                case 2:
+                    taco.setExtraCheese(true);
+                    System.out.println("✓ Extra cheese added");
+                    break;
+                case 3:
+                    addMoreToppings(taco);
+                    break;
+                case 4:
+                    addMoreSauces(taco);
+                    break;
+                case 5:
+                    removeTopping(taco);
+                    break;
+                case 0:
+                    customizing = false;
+                    break;
+                default:
+                    System.out.println("✗ Invalid option");
+            }
+        }
+    }
+
+    private void addMoreToppings(Taco taco) {
+        System.out.println("\nSelect topping to add:");
+        System.out.println("1) Lettuce");
+        System.out.println("2) Cilantro");
+        System.out.println("3) Onions");
+        System.out.println("4) Tomatoes");
+        System.out.println("5) Jalapeños");
+        System.out.println("6) Radishes");
+        System.out.println("7) Pico de Gallo");
+        System.out.println("8) Guacamole");
+        System.out.println("9) Corn");
+        System.out.print("Enter choice: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                taco.addTopping(RegularTopping.LETTUCE);
+                break;
+            case 2:
+                taco.addTopping(RegularTopping.CILANTRO);
+                break;
+            case 3:
+                taco.addTopping(RegularTopping.ONIONS);
+                break;
+            case 4:
+                taco.addTopping(RegularTopping.TOMATOES);
+                break;
+            case 5:
+                taco.addTopping(RegularTopping.JALAPENOS);
+                break;
+            case 6:
+                taco.addTopping(RegularTopping.RADISHES);
+                break;
+            case 7:
+                taco.addTopping(RegularTopping.PICO_DE_GALLO);
+                break;
+            case 8:
+                taco.addTopping(RegularTopping.GUACAMOLE);
+                break;
+            case 9:
+                taco.addTopping(RegularTopping.CORN);
+                break;
+            default:
+                System.out.println("✗ Invalid choice");
+                return;
+        }
+        System.out.println("✓ Topping added");
+    }
+
+    private void addMoreSauces(Taco taco) {
+        System.out.println("\nSelect sauce to add:");
+        System.out.println("1) Salsa Verde");
+        System.out.println("2) Salsa Roja");
+        System.out.println("3) Chipotle");
+        System.out.println("4) Habanero");
+        System.out.println("5) Mild");
+        System.out.println("6) Extra Hot");
+        System.out.print("Enter choice: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                taco.addSauce(Sauce.SALSA_VERDE);
+                break;
+            case 2:
+                taco.addSauce(Sauce.SALSA_ROJA);
+                break;
+            case 3:
+                taco.addSauce(Sauce.CHIPOTLE);
+                break;
+            case 4:
+                taco.addSauce(Sauce.HABANERO);
+                break;
+            case 5:
+                taco.addSauce(Sauce.MILD);
+                break;
+            case 6:
+                taco.addSauce(Sauce.EXTRA_HOT);
+                break;
+            default:
+                System.out.println("✗ Invalid choice");
+                return;
+        }
+        System.out.println("✓ Sauce added");
+    }
+
+    private void removeTopping(Taco taco) {
+        if (taco.getRegularToppings().isEmpty()) {
+            System.out.println("No toppings to remove!");
+            return;
+        }
+
+        System.out.println("\nCurrent toppings:");
+        for (int i = 0; i < taco.getRegularToppings().size(); i++) {
+            System.out.println((i + 1) + ") " + taco.getRegularToppings().get(i));
+        }
+
+        System.out.print("Enter topping number to remove: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice > 0 && choice <= taco.getRegularToppings().size()) {
+            RegularTopping removed = taco.getRegularToppings().remove(choice - 1);
+            System.out.println("✓ Removed " + removed);
+        } else {
+            System.out.println("✗ Invalid choice");
         }
     }
 }

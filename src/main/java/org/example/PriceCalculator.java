@@ -1,11 +1,10 @@
 package org.example;
 
 import org.example.enums.DrinkSize;
-import org.example.enums.TacoSize;
 
 public class PriceCalculator {
 
-    public static double calculatorTacoPrice(Taco taco){
+    public static double calculateTacoPrice(Taco taco){
          double price = 0.0;
 
         switch (taco.getSize()) {
@@ -57,7 +56,7 @@ public class PriceCalculator {
         return price;
     }
 
-    public static double calculatorDrinkPrice(DrinkSize size){
+    public static double calculateDrinkPrice(DrinkSize size){
         switch (size) {
             case SMALL:
                 return 2.00;
@@ -70,7 +69,7 @@ public class PriceCalculator {
         }
     }
 
-    private static double getChipssalsaPrice(){
+    public static double getChipsSalsaPrice(){
         return 1.50;
     }
 }

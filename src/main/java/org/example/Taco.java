@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.enums.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class Taco implements OrderItem {
@@ -14,6 +14,17 @@ public class Taco implements OrderItem {
     private boolean extraMeat;
     private boolean extraCheese;
     private boolean deepFried;
+
+    // Constructor - ADDED THIS
+    public Taco(TacoSize size, TortillaType tortilla) {
+        this.size = size;
+        this.tortilla = tortilla;
+        this.regularToppings = new ArrayList<>();
+        this.sauces = new ArrayList<>();
+        this.extraMeat = false;
+        this.extraCheese = false;
+        this.deepFried = false;
+    }
 
     public TacoSize getSize() {
         return size;
@@ -67,11 +78,21 @@ public class Taco implements OrderItem {
         return extraMeat;
     }
 
+    // ADDED THIS - for PriceCalculator compatibility
+    public boolean hasExtraMeat() {
+        return extraMeat;
+    }
+
     public void setExtraMeat(boolean extraMeat) {
         this.extraMeat = extraMeat;
     }
 
     public boolean isExtraCheese() {
+        return extraCheese;
+    }
+
+    // ADDED THIS - for PriceCalculator compatibility
+    public boolean hasExtraCheese() {
         return extraCheese;
     }
 
@@ -108,12 +129,12 @@ public class Taco implements OrderItem {
     public String getDescription() {
         StringBuilder description = new StringBuilder();
         description.append(size).append(" - ").append(tortilla).append(" Tortilla");
-   if (deepFried) {
+
+        if (deepFried) {
             description.append(" (Deep Fried)");
         }
 
         description.append("\n   ");
-
 
         if (meat != null) {
             description.append(meat);
@@ -121,7 +142,6 @@ public class Taco implements OrderItem {
                 description.append(" (Extra)");
             }
         }
-
 
         if (cheese != null) {
             if (meat != null) {
@@ -133,7 +153,6 @@ public class Taco implements OrderItem {
             }
         }
 
-
         if (!regularToppings.isEmpty()) {
             description.append("\n   ");
             for (int i = 0; i < regularToppings.size(); i++) {
@@ -143,7 +162,6 @@ public class Taco implements OrderItem {
                 }
             }
         }
-
 
         if (!sauces.isEmpty()) {
             description.append("\n   Sauces: ");
@@ -158,5 +176,3 @@ public class Taco implements OrderItem {
         return description.toString();
     }
 }
-
-
